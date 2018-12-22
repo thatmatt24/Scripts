@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 ## this checks the access time of the given file and sees if its been accessed since last check
@@ -36,8 +37,11 @@ echo "$rt_acc return"
 ### then we know it was accessed since last check
 #### so we can iterate the count (passing it to the count file), and update the access time history
 
+echo DEBUG
+echo $a_time
+echo $rt_acc
 
-if ["$a_time" -ne "$rt_acc" ];
+if [ "$a_time" -ne "$rt_acc" ];
 	
 	then echo $((count + a)) >counter.txt;
 
