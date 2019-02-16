@@ -1,12 +1,12 @@
 #!/bin/bash
 
-pub_ip=`ipconfig getifaddr en0`
+priv_ip=`ipconfig getifaddr en0`
 
-priv_ip1="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+pub_ip1="$(dig +short myip.opendns.com @resolver1.opendns.com)"
 
-#priv_ip2=`wget http://ipecho.net/plain -O - -q ; echo`
+#pub_ip2=`wget http://ipecho.net/plain -O - -q ; echo`
 
-#priv_ip3=`curl ipecho.net/plain`
+#pub_ip3=`curl ipecho.net/plain`
 
 echo $pub_ip
 
