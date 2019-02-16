@@ -1,0 +1,18 @@
+problem statements
+- networks are scanned for open ports
+- ports are exposed for known vulnerabilities
+
+solutions
+> so how about a scanner that notifies the user of those vulnerabilities. 
+>> can be made to explain what ports do what and why some should be open/closed/filtered.
+
+tech specs
+= nmap for open ports
+== grep or awk output for ports that they need to run their service
+=== and for the ports that they do not need -> alert them of unneccessary open port
+
+
+features
+~ user input of what they need to run on their system (eg web server)
+~~ checks to see what ports they have open that are associated with their service
+
