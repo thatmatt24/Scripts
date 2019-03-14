@@ -29,6 +29,7 @@ while [ "$option" != "quit" ]; do
 		if [ "$nmOpt" == "-O" ];
 
 			then
+			echo "nmap -O 
 			nmap -O $addr_range;
 		
 		elif [ "$nmOpt" == "-sn" ];
