@@ -18,8 +18,14 @@ else
 	echo "Private IP is $priv_ip"
 fi 
 
-## make this check for each and return whichever != pub_ip. If none do, echo "note" and find out why (UDP vs TCP) in order to 
-### investigate that network further
+loc=$(curl -s https://freegeoip.app/json/ localhost)
 
+if [[ $loc == *"Canada"* ]]; then
+	printf "VPN is active\n"
+
+	else
+		printf "VPN is inactive\n"
+
+fi
 
 
