@@ -1,9 +1,11 @@
 #!/bin/bash
 
-w="$(date +%w)"
-diff=$(( (8-$w)%7 ))
-[[ $diff -eq 0 ]] && diff=7
-mon="$(date -v+${diff}d "+%B %d" | tr a-z A-Z)"
+#w="$(date +%w)"
+#diff=$(( (8-$w)%7 ))
+#[[ $diff -eq 0 ]] && diff=7
+#mon="$(date -v+${diff}d "+%B %d" | tr a-z A-Z)"
+
+mon=$(date -v+Mon "+%B %-d" | cut -d" " -f 1,2 | tr a-z A-z)
 echo $mon
 
 list="$(wget -q -O - https://www.ahec.edu/campus-info/food/food-trucks | grep -A 12 "FOOD TRUCK LINE UP" |
@@ -12,40 +14,39 @@ list="$(wget -q -O - https://www.ahec.edu/campus-info/food/food-trucks | grep -A
 
 printf "\n--------\n$list\n--------\n\n"
 
+# checking each url listed to see if '/menu' is part of it
 for i in $list; do
-	printf "*Checking $i...\n"
+	echo "*Checking $i..."
 	if [[ $i != *"menu"* ]]; then
-		printf "No menu, doing more digging...\n"
+		echo "No menu, doing more digging..."
+		
 		new="$i/menu/"
-#		printf "$new -----------------"
 		try="$(wget -q -O - $new | egrep '[Vv][Ee][Gg][Aa][Nn]')"
-#		printf "$try ****************\n"
+		
+		if [ ! -z "$try" ]; then
+			
+			echo ":("
 		else 
-		printf "Has menu, checking options...\n"
-	fi
+
+			echo "Has menu, checking options..."
+
+			output="$(wget -q -O - $i | egrep '[Vv][eE][gG][aA][nN]')"
+		
+			echo "$output"
 	
-	output="$(wget -q -O - $i | egrep '[Vv][eE][gG][aA][nN]')"
-#	printf "$output\n"	
-	
-	if [ ! -z "$output" ];
-		then 
+			if [ ! -z "$output" ];
+				then 
 		
-		printf "yay! $i has vegan options\n"
+					echo "yay! $i has vegan options"
+
+				else
 		
-#		if [ -z "$new" ]; 
-#			then
-#			if [ ! -z "$try" ]; 
-#				then 
-#				printf "yay! $i has vegan options\n"
-#				else
-#				printf ":(\n";
-#			fi
-#			else
-#			printf ":(\n"
-#		fi
-			else
-		
-		printf ":(\n"
+					echo ":("
+			fi
+
+		fi
+
+		printf "\n--------------------\n"
 	fi
-	printf "\n--------------------\n"
 done
+
