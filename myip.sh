@@ -8,17 +8,17 @@ pub_ip2=`wget http://ipecho.net/plain -O - -q ; echo`
 
 #pub_ip3=`curl ipecho.net/plain`
 
-echo "Public IP is $pub_ip1"
+echo "External IP is $pub_ip1"
 
 if [ "$pub_ip1" == "$priv_ip" ];
 
 	then
-	echo "Private IP is $priv_ip2"
+	echo "Internal IP is $priv_ip2"
 else 
-	echo "Private IP is $priv_ip"
+	echo "Internal IP is $priv_ip"
 fi 
 
-loc=$(curl -s https://freegeoip.app/json/ localhost)
+loc=$(curl -s https://freegeoip.app/csv/ localhost)
 
 if [[ $loc == *"Canada"* ]]; then
 	printf "VPN is active\n"
@@ -28,4 +28,10 @@ if [[ $loc == *"Canada"* ]]; then
 
 fi
 
+ip=$(echo $loc | cut -d, -f 1)
+city=$(echo $loc | cut -d, -f 6)
+lat=$(echo $loc | cut -d, -f 9)
+long=$(echo $loc | cut -d, -f 10)
+dat=$(date)
 
+echo "$ip at $city: $lat, $long on $dat" >> /Users/mattmcmahon/Desktop/Scripts/ip-log.nosync
