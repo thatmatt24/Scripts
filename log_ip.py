@@ -37,6 +37,10 @@ def printer(list):
             else:
                 el = '{:^18}'.format(el)
                 file.write('|' + el)
+        elif (i == 2):
+            el = el[0:18]
+            el = '{:^17}'.format(el)
+            file.write('|' + el)
         else:
             el = el[0:17]
             el = '{:^17}'.format(el)
@@ -94,7 +98,7 @@ try:
     city = cur["city"]
     cur = cur["ip"]
 except:
-    lat, lon, city, cur = "Error"
+    lat = lon = city = cur = "Error"
     print("curl error")
 
 try:
@@ -109,7 +113,10 @@ try:
     pnp = Popen(['upnpc', '-s'], stdout=PIPE, stderr=PIPE)
     pnp, err = pnp.communicate()
     pnp = pnp.decode('utf-8')
-    pnp = re.findall(r'ExternalIPAddress', pnp)[0].split()[1]
+    ext_ip = pnp.index("ExternalIPAddress")
+    pnp = pnp[(ext_ip + 20) : (ext_ip + 32)]
+    pnp = re.match('([0-9]{1,3}\.){3}[0-9]{1,3}', pnp)
+    pnp = upnp.group(0)
 
 except:
     print('upnpc error')
