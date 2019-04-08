@@ -1,8 +1,18 @@
 # log internal ip's from (2) sources: ipconfig, upnpc
 # log external ip's from (4) sources: urllib, curl, dig, upnpc
 # print these into formatted columns for comparison
+
+################
+#### TODO's ####
+# -- run when wifi connection made
+#       --- if connection is same as previous do not run nor if connection has been previously logged in the past 30 days
+# -- copy contents to another file for safe keeping
+# -- add logging
+# -- add option to record datum that was cut off to fit in table
+#       --- ie [-n] if socket.gethostname (sock_name) is > 17, can be recorded in separate file and the option do so on runtime
+################
+
 from subprocess import *
-import subprocess
 import datetime
 import socket
 import urllib.request
@@ -32,6 +42,7 @@ def printer(list):
         elif (i == 11):
             el = el[0:18]
             if ("----" not in el):
+                el = el[0:17]
                 el = '{:^17}'.format(el)
                 file.write('|' + el + "|")
             else:
@@ -48,7 +59,6 @@ def printer(list):
 
     file.write("\n")
     file.close()
-
 
 # example for formating:
 title = ['date', 'time', 'SSID','ext: urllib', 'ext: curl', 'ext: dig', 'ext: upnpc', 'internal', 'sock_hostname', 'latitude', 'longitude', 'city']
@@ -113,17 +123,18 @@ try:
     pnp = Popen(['upnpc', '-s'], stdout=PIPE, stderr=PIPE)
     pnp, err = pnp.communicate()
     pnp = pnp.decode('utf-8')
-    ext_ip = pnp.index("ExternalIPAddress")
-    pnp = pnp[(ext_ip + 20) : (ext_ip + 32)]
-    pnp = re.match('([0-9]{1,3}\.){3}[0-9]{1,3}', pnp)
-    pnp = upnp.group(0)
+    pnp = pnp.split("ExternalIPAddress")[1].split(" = ")[1].split("\n")[0]
+    # ext_ip = pnp.index("ExternalIPAddress")
+    # pnp = pnp[(ext_ip + 20) : (ext_ip + 32)]
+    # pnp = re.match('([0-9]{1,3}\.){3}[0-9]{1,3}', pnp)
+    # pnp = pnp.group(0)
 
 except:
     print('upnpc error')
     pnp = "Error"
 
 
-lname = [dt, tt, ssid,  urlib, cur, dig, pnp, ipconfig, sock_name, lat, lon, city]
 
-printer(lname)
+
+printer([dt, tt, ssid,  urlib, cur, dig, pnp, ipconfig, sock_name, lat, lon, city])
 printer(lines)
