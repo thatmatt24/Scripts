@@ -99,45 +99,45 @@ except:
     ipconfig = ipconfig.decode('utf-8').strip()
     print("socket error")
 
-# try:
-#     urlib = urllib.request.urlopen('http://ipecho.net/plain').read().decode('utf-8')
-# except:
-#     urlib = "Error"
-#     print("urlib error")
+try:
+    urlib = urllib.request.urlopen('http://ipecho.net/plain').read().decode('utf-8')
+except:
+    urlib = "Error"
+    print("urlib error")
 
-# try:
-#     cur = Popen(['curl', '-s', 'https://freegeoip.app/json/' , 'localhost'], stdout=PIPE, stderr=PIPE)
-#     cur, err = cur.communicate()
-#     cur = json.loads(cur)
-#     lat = str(cur["latitude"])
-#     lon = str(cur["longitude"])
-#     city = cur["city"]
-#     cur = cur["ip"]
-# except:
-#     lat = lon = city = cur = "Error"
-#     print("curl error")
+try:
+    cur = Popen(['curl', '-s', 'https://freegeoip.app/json/' , 'localhost'], stdout=PIPE, stderr=PIPE)
+    cur, err = cur.communicate()
+    cur = json.loads(cur)
+    lat = str(cur["latitude"])
+    lon = str(cur["longitude"])
+    city = cur["city"]
+    cur = cur["ip"]
+except:
+    lat = lon = city = cur = "Error"
+    print("curl error")
 
-# try:
-#     dig = Popen(['dig', '+short', 'myip.opendns.com', '@resolver1.opendns.com'], stdout=PIPE, stderr=PIPE)
-#     dig, err = dig.communicate()
-#     dig = dig.decode('utf-8').strip()
-# except:
-#     dig = "Error"
-#     print("dig error")
+try:
+    dig = Popen(['dig', '+short', 'myip.opendns.com', '@resolver1.opendns.com'], stdout=PIPE, stderr=PIPE)
+    dig, err = dig.communicate()
+    dig = dig.decode('utf-8').strip()
+except:
+    dig = "Error"
+    print("dig error")
 
-# try:
-#     pnp = Popen(['upnpc', '-s'], stdout=PIPE, stderr=PIPE)
-#     pnp, err = pnp.communicate()
-#     pnp = pnp.decode('utf-8')
-#     pnp = pnp.split("ExternalIPAddress")[1].split(" = ")[1].split("\n")[0]
-#     # ext_ip = pnp.index("ExternalIPAddress")
-#     # pnp = pnp[(ext_ip + 20) : (ext_ip + 32)]
-#     # pnp = re.match('([0-9]{1,3}\.){3}[0-9]{1,3}', pnp)
-#     # pnp = pnp.group(0)
+try:
+    pnp = Popen(['upnpc', '-s'], stdout=PIPE, stderr=PIPE)
+    pnp, err = pnp.communicate()
+    pnp = pnp.decode('utf-8')
+    pnp = pnp.split("ExternalIPAddress")[1].split(" = ")[1].split("\n")[0]
+    # ext_ip = pnp.index("ExternalIPAddress")
+    # pnp = pnp[(ext_ip + 20) : (ext_ip + 32)]
+    # pnp = re.match('([0-9]{1,3}\.){3}[0-9]{1,3}', pnp)
+    # pnp = pnp.group(0)
 
-# except:
-#     print('upnpc error')
-#     pnp = "Error"
+except:
+    print('upnpc error')
+    pnp = "Error"
 
 
 
