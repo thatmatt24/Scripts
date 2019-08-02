@@ -8,7 +8,14 @@ pub_ip2=`wget http://ipecho.net/plain -O - -q ; echo`
 
 #pub_ip3=`curl ipecho.net/plain`
 
-echo "External IP is $pub_ip1"
+if [ -z "$pub_ip1" ]; 
+	then
+	echo "External IP(w) is $pub_ip2"
+
+	else
+		echo "External IP(d) is $pub_ip1"
+
+fi
 
 if [ "$pub_ip1" == "$priv_ip" ];
 

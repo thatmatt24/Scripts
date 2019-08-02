@@ -1,8 +1,8 @@
 #!/bin/bash
 
-mon=$(date -v+Mon "+%B %-d" | cut -d" " -f 1,2 | tr a-z A-z)
+mon=$(date -v+Mon "+%B %-d" | cut -d" " -f 1,2)
 echo $mon
-nex=$(date -v+Mon -v+7d "+%B %-d" | cut -d" " -f 1,2 | tr a-z A-z)
+nex=$(date -v+Mon -v+7d "+%B %-d" | cut -d" " -f 1,2)
 # echo $nex
 
 list="$(wget -qO -  https://www.ahec.edu/campus-info/food/food-trucks | grep -A 12 "$mon" | grep -B 12 "$nex" | grep "http" | cut -d '"' -f 2)"

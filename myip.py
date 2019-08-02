@@ -5,12 +5,12 @@ from subprocess import *
 import datetime
 import socket
 
-prip = socket.gethostbyname(socket.gethostname())
+pri = socket.gethostbyname(socket.gethostname())
 
 pub = subprocess.check_output(['curl', '-s', 'ipecho.net/plain'])
 
 
-print("Private IP: " + str(prip))
+print("Private IP: " + str(pri))
 
 print("Public IP: " + str(pub))
 
