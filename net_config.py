@@ -4,14 +4,17 @@
 
 ################
 #### TODO's ####
+# -- rewrite as clean/readable/efficient code
+# -- multithreading
 # -- run when wifi connection made
 #       --- if connection is same as previous do not run nor if connection has been previously logged in the past 30 days
 # -- copy contents to another file for safe keeping
-# -- change location to user location (this may be more accurate)
 # -- add logging
 # -- add router manufacturer info
 # -- add option to record data that was cut off to fit in table
 #       --- ie [-n] if socket.gethostname (sock_name) is > 17, can be recorded in separate file and the option do so on runtime
+# -- account for 'arp-scan' running and not timing out (ie IllegalPetes WiFi)
+#       --- identify other bugs that need addressing or investigating
 ################
 
 from subprocess import *
@@ -119,52 +122,43 @@ except:
     print('upnpc error')
     pnp = "Error"
 
+
 #Router Manufacturer from MAC address
-
-try:
-    router_ip = Popen(['netstat', '-rn'], stdout=PIPE, stderr=PIPE)
-    router_ip, err = router_ip.communicate()
-    router_ip = router_ip.decode('utf-8')
-
-
-except:
-    print
     
 try:
+    #get router IP
+    router_ip = Popen('netstat -rn | grep default', shell=True, stdout=PIPE, stderr=PIPE)
+    router_ip, err = router_ip.communicate()
+    router_ip = router_ip.decode('utf-8')
+    router_ip = re.findall(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", router_ip)[0]
+    # router_ip = str(router_ip)
+    print(router_ip)
+
     #get MAC address
     router = Popen(['arp-scan', '-l'], stdout=PIPE, stderr=PIPE)
     router, err = router.communicate()
     router = router.decode('utf-8')
-    router = router.split("https://github.com/royhills/arp-scan")[1].split("\n")[1].split("\t")[1]
-    router = router[0:8]
-
-    #compare to list
-    router = Popen(['arp-scan', '-l'], stdout=PIPE, stderr=PIPE)
-    router, err = router.communicate()
-    router = router.decode('utf-8')
-    router = router.split("https://github.com/royhills/arp-scan")[1].split("\n")[1].split("\t")[1]
-    router = router[0:8]
-
-    router2 = router.replace(":", "")
-    router2 = router2.upper()
+    router = router.split(router_ip)[1].split("\n")[0:1] 
+    router = router[0].split("\t")[1].split(":")[0:3]
+    router[0:3] = [''.join(router[0:3])]
+    router = router[0].replace(":", "").upper()
+    # print(router)
 
     with open('/usr/local/Cellar/arp-scan/1.9.5_1/share/arp-scan/ieee-oui.txt','r') as mac:
         for line in mac:
-            if router2 in line:
-                match = line.split(router2)[1].strip()
+            if router in line:
+                router_mac = line.split(router)[1].strip()
                 # print(match)
-                mac_manu = match
-    if mac_manu:
-        mac_manu = "N/A"
+            else:
+                print("No OUI match")
+
+    if not router_mac:
+        router_mac = "N/A"
+
+
 except:
     print("MAC error - manufacturer not found")
-    mac_manu = "error"
+    router_mac = "error"
 
 
-printer([dt, tt, ssid, mac_manu, urlib, cur, dig, pnp, ipconfig, sock_name, lat, lon, city])
-
-## strip newlines and print to terminal
-# with open('../ip-log1.nosync', 'r') as f:
-#     for line in f.readlines():
-#         print(end=line)
-#         print(line.rstrip('\n'))
+printer([dt, tt, ssid, router_mac, urlib, cur, dig, pnp, ipconfig, sock_name, lat, lon, city])
