@@ -27,7 +27,7 @@ fi
 
 loc=$(curl -s https://freegeoip.app/csv/ localhost)
 
-if [[ $loc == *"Canada"* ]]; then
+if [[ $loc != *"Denver"* ]]; then
 	printf "VPN is active\n"
 
 	else

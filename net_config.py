@@ -80,6 +80,7 @@ except:
 try:
     sock_name = socket.gethostname()
     ipconfig = socket.gethostbyname(sock_name)
+    # print(socket.getsockname())
 except:
     ipconfig = Popen(['ipconfig', 'getifaddr', 'en0'], stdout=PIPE, stderr=PIPE)
     ipconfig, err = ipconfig.communicate()
