@@ -2,45 +2,47 @@
 
 
 ## grabs private ip address and cuts off host 
-addr_range="`ipconfig getifaddr en0| cut -d . -f 1-3`.*"
+#addr_range="`ipconfig getifaddr en0| cut -d . -f 1-3`.*"
 
-echo $addr_range
+#ipaddr=`ifconfig en0 | awk '$1=="inet" {print $2}'`
+ipaddr="$(ipcalc `ipconfig getifaddr en0` | cut -d' ' -f 4 | sed -n '5 p')"
+echo $ipaddr
 
-ipaddr=`ifconfig en0 | awk '$1=="inet" {print $2}'`
+while [ "$option" != "q" ]; 
+do
 
-
-while [ "$option" != "quit" ]; do
-
-	echo "Enter option (ipcalc, nmap, quit):"
+	echo "Enter option ([i]pcalc, [n]map, [q]uit): "
 	read option
 
-	if [ "$option" == "ipcalc" ];
+	if [ "$option" == "i" ]
+	then
+		ipcalc $ipaddr
 
-		then
-		ipcalc $ipaddr;
-
-	elif [ "$option" == "nmap" ];
+	elif [ "$option" == "n" ]
 	
-		then
-		echo "nmap options (-O,-sn, or both?):"
+	then
+		echo "nmap options (-[O],-[s]n, or [a]t4): "
 
 		read nmOpt
 		
-		if [ "$nmOpt" == "-O" ];
+		if [ "$nmOpt" == "O" ]
 
-			then
-			echo "nmap -O 
-			nmap -O $addr_range;
+		then
+			echo "nmap -O" 
+			sudo nmap -O $ipaddr
 		
-		elif [ "$nmOpt" == "-sn" ];
+		elif [ "$nmOpt" == "s" ];
 			then
-			nmap -sn $addr_range;
+			sudo nmap -sn $ipaddr
 
-		elif [ "$nmOpt" == "both" ];
-			then
-			nmap -Osn $addr_range;
-		
+		elif [ "$nmOpt" == "a" ];
+		then
+			sudo nmap -AT4 $ipaddr
+		else
+			exit
 		fi
 
+	else 
+		exit
 	fi
 done
