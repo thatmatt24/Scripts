@@ -31,7 +31,7 @@ fi
 
 loc=$(curl -s https://freegeoip.app/csv/ localhost)
 
-vpn="$(nettop -L1 -p 'CyberGhost VPN' | grep ipsec)"
+vpn="$(nettop -l1 | grep NEIKEv2Provider)"
 
 
 if [ -z "$vpn"  ]; then
