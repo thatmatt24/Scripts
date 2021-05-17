@@ -1,18 +1,15 @@
 # log internal ip's from (2) sources: ipconfig, upnpc
 # log external ip's from (4) sources: urllib, curl, dig, upnpc
-# print these into formatted columns for comparison and verification
+# print these into formatted columns for comparison and verification (pending csv or json)
 
 ################
 #### TODO's ####
 # -- rewrite as clean/readable/efficient code
-# -- multithreading
-# -- run when wifi connection made
+# -- multithreading (pending bug fixes)
+# -- run when wifi connection made (automator)
 #       --- if connection is same as previous do not run nor if connection has been previously logged in the past 30 days
-# -- copy contents to another file for safe keeping
 # -- add logging
-# -- add router manufacturer info
-# -- add option to record data that was cut off to fit in table
-#       --- ie [-n] if socket.gethostname (sock_name) is > 17, can be recorded in separate file and the option do so on runtime
+# -- add router manufacturer info (crontab for monthly refresh)
 # -- account for 'arp-scan' running and not timing out (ie IllegalPetes WiFi)
 #       --- identify other bugs that need addressing or investigating
 ################
